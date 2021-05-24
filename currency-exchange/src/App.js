@@ -8,6 +8,7 @@ import {
 
 import { Home } from './modules/home/Home';
 import { Default } from './modules/default/Default';
+import { Result } from './modules/result/Result';
 
 import './App.scss';
 
@@ -17,6 +18,7 @@ function App() {
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route exact path='/default-selection' component={Default}/>
+        <Route exact path='/result' component={Result} />
         <Redirect to="/" />
       </Switch>
     </Router>
