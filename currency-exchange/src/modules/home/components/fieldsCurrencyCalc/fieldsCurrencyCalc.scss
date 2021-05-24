@@ -1,0 +1,17 @@
+.fields-wrapper {
+  display: flex;
+}
+
+.field-container {
+  margin-left: 15px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.field-item {
+  outline: none;
+  padding: 5px;
+  width: 200px;
+}
