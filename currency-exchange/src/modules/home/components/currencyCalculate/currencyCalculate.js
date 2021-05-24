@@ -4,9 +4,9 @@ import { Formik, Form, Field } from 'formik';
 
 import { ConvertButton } from '../convertButton/convertButton';
 
-import './fieldsCurrencyCalc.scss';
+import './currencyCalculate.scss';
 
-export const FieldsCurrencyCalc = () => {
+export const CurrencyCalculate = () => {
   const dispatch = useDispatch();
 
   const initialValues = {
