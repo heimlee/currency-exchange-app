@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Formik, Form, Field } from 'formik';
+
+import { ConvertButton } from '../convertButton/convertButton';
 
 import './fieldsCurrencyCalc.scss';
 
@@ -25,7 +26,7 @@ export const FieldsCurrencyCalc = () => {
       initialValues={initialValues}
       onSubmit={onSubmit}
     >
-      <Form>
+      <Form className="form-container">
         <div className="fields-wrapper">
           <div className="field-container">
             <div>Amount</div>
@@ -50,6 +51,7 @@ export const FieldsCurrencyCalc = () => {
             </Field>
           </div>
         </div>
+        <ConvertButton />
       </Form>
     </Formik>
   );
