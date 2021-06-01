@@ -34,7 +34,17 @@ export const CurrencyCalculate = () => {
         <div className="fields-wrapper">
           <div className="field-container">
             <div>Amount</div>
-            <Field type="text" id="amount" name="amount" className="field-item" />
+            <Field 
+              type="text"
+              id="amount"
+              name="amount"
+              className="field-item"
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+            />
           </div>
           <div className="field-container">
             <div>From</div>
