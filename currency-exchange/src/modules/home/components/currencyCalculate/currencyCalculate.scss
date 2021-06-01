@@ -9,6 +9,8 @@
 }
 
 .field-container {
+  display: flex;
+  flex-direction: column;
   margin-left: 15px;
 
   &:first-child {
@@ -20,4 +22,9 @@
   outline: none;
   padding: 5px;
   width: 200px;
+}
+
+.convert-button {
+  margin-top: 30px;
+  padding: 5px 10px;
 }
