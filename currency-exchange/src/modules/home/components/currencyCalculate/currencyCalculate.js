@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import { Redirect } from 'react-router-dom';
 
 import { currencyCalculate, fromCurrency, toCurrency } from '../../actions/currencyCalculateAction';
-import { Redirect } from 'react-router-dom';
 
 import './currencyCalculate.scss';
 
