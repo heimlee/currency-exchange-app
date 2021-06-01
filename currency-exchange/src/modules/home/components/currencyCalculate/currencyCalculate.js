@@ -9,6 +9,7 @@ import './currencyCalculate.scss';
 
 export const CurrencyCalculate = () => {
   const [toNext, setToNext] = useState(false);
+  const [toResult, setToResult] = useState(false);
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -22,7 +23,10 @@ export const CurrencyCalculate = () => {
     dispatch(fromCurrency(values.fromCurrency));
     dispatch(toCurrency(values.toCurrency));
     console.log(JSON.stringify(values, null, 2));
-    setToNext(true);
+    if (values.amount === '' || values.fromCurrency === '' || values.toCurrency === '') {
+    return setToNext(true);
+    } 
+    setToResult(true);
   };
 
   return(
@@ -66,6 +70,7 @@ export const CurrencyCalculate = () => {
           </div>
         </div>
         {toNext ? <Redirect to="/default-selection" /> : null}
+        {toResult ? <Redirect to="/result" /> : null}
         <button type="submit" className="convert-button">Add Amount</button>
       </Form>
     </Formik>
