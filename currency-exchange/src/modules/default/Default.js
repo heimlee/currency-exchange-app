@@ -13,8 +13,8 @@ export const Default = () => {
 
   const initialValues = {
     amount: '',
-    fromCurrency: '',
-    toCurrency: '',
+    fromCurrency: 'USD',
+    toCurrency: 'UAH',
   };
 
   const onSubmit = (values) => {
