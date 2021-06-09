@@ -1,21 +1,59 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Formik, Form, Field } from 'formik';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik, Form } from 'formik';
+import { useHistory } from 'react-router-dom';
+import * as Yup from 'yup';
 
-import { currencyCalculate, fromCurrency, toCurrency } from '../../actions/currencyCalculateAction';
+import { Input } from '../input/Input';
+import { Select } from '../select/Select';
+import { currencyCalculate, fromCurrency, toCurrency, isSwap, fetchCurrencyCalculate } from '../../actions/currencyCalculateAction';
 
 import './currencyCalculate.scss';
 
 export const CurrencyCalculate = () => {
-  const [toNext, setToNext] = useState(false);
-  const [toResult, setToResult] = useState(false);
+  const fromCurrencyValues = [
+    { key: 'USD', value: 'USD' },
+    { key: 'EUR', value: 'EUR' },
+    { key: 'RUR', value: 'RUR' },
+    { key: 'BTC', value: 'BTC' },
+  ];
+
+  const toCurrencyValues = [
+    { key: 'UAH', value: 'UAH' },
+    { key: 'USD', value: 'USD' },
+  ];
+
+  const isSwapStore = useSelector(state => state.home.isSwap);
+  const defaultSelectionStore = useSelector(state => state.defaultSelection);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    dispatch(fetchCurrencyCalculate());
+  }, [dispatch]);
+
+  const fromCurrencyDefault = () => {
+    if (localStorage.getItem('state') === null || JSON.parse(localStorage.getItem('state')).defaultSelection.fromCurrencyDefault.length === 0) {
+      return String('USD');
+    } else if (JSON.parse(localStorage.getItem('state')).defaultSelection.fromCurrencyDefault.length === 0) {
+      return defaultSelectionStore.fromCurrencyDefault;
+    }
+    return defaultSelectionStore.fromCurrencyDefault;
+  };
+
+  const toCurrencyDefault = () => {
+    if (localStorage.getItem('state') === null || JSON.parse(localStorage.getItem('state')).defaultSelection.toCurrencyDefault.length === 0) {
+      return String('UAH');
+    } else if (JSON.parse(localStorage.getItem('state')).defaultSelection.toCurrencyDefault.length === 0) {
+      return defaultSelectionStore.toCurrencyDefault;
+    }
+    return defaultSelectionStore.toCurrencyDefault;
+  };
 
   const initialValues = {
     amount: '',
-    fromCurrency: '',
-    toCurrency: '',
+    fromCurrency: `${fromCurrencyDefault()}`,
+    toCurrency: `${toCurrencyDefault()}`,
   };
 
   const onSubmit = (values) => {
@@ -23,55 +61,36 @@ export const CurrencyCalculate = () => {
     dispatch(fromCurrency(values.fromCurrency));
     dispatch(toCurrency(values.toCurrency));
     console.log(JSON.stringify(values, null, 2));
-    if (values.amount === '' || values.fromCurrency === '' || values.toCurrency === '') {
-    return setToNext(true);
-    } 
-    setToResult(true);
+    history.push('/result');
+  };
+
+  const validationSchema = Yup.object({
+    amount: Yup.string().required('Required!'),
+  });
+
+  const onSwap = () => {
+    dispatch(isSwap());
+  };
+
+  const onClickToDefault = () => {
+    history.push('/default-selection');
   };
 
   return(
     <Formik 
       initialValues={initialValues}
       onSubmit={onSubmit}
+      validationSchema={validationSchema}
     >
       <Form className="form-container">
         <div className="fields-wrapper">
-          <div className="field-container">
-            <div>Amount</div>
-            <Field 
-              type="text"
-              id="amount"
-              name="amount"
-              className="field-item"
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-            />
-          </div>
-          <div className="field-container">
-            <div>From</div>
-            <Field as="select" name="fromCurrency" className="field-item">
-              <option value=""></option>
-              <option value="USD">USD - US Dollar</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="RUB">RUB - Russian Ruble</option>
-              <option value="BTC">BTC - Bitcoin</option>
-            </Field>
-          </div>
-          <div className="field-container">
-            <div>To</div>
-            <Field as="select" name="toCurrency" className="field-item">
-              <option value=""></option>
-              <option value="UAH">UAH - Ukraininan Hryvnia</option>
-              <option value="USD">USD - US Dollar</option>
-            </Field>
-          </div>
+          <Input label='Amount' name='amount' />
+          {!isSwapStore ? <Select label='From' name='fromCurrency' options={fromCurrencyValues} /> : <Select label='From' name='fromCurrency' options={toCurrencyValues} />}
+          <button type="button" className="swap-button" onClick={onSwap}>swap</button>
+          {!isSwapStore ? <Select label='To' name='toCurrency' options={toCurrencyValues} /> : <Select label='To' name='toCurrency' options={fromCurrencyValues} />}
         </div>
-        {toNext ? <Redirect to="/default-selection" /> : null}
-        {toResult ? <Redirect to="/result" /> : null}
-        <button type="submit" className="convert-button">Add Amount</button>
+        <button type="button" className="convert-button" onClick={onClickToDefault}>Set Default Selection</button>
+        <button type="submit" className="convert-button">Next</button>
       </Form>
     </Formik>
   );

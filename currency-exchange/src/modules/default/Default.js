@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Formik, Form, Field } from 'formik';
-import { Redirect, Link } from "react-router-dom";
+import { Formik, Form } from 'formik';
+import { Link } from "react-router-dom";
 
-import { currencyCalculate, fromCurrency, toCurrency } from '../home/actions/currencyCalculateAction';
+import { Select } from '../home/components/select/Select';
+import { setDefaultFromCurrency, setDefaultToCurrency } from './actions/defaultAction';
 
 import './default.scss';
 
 export const Default = () => {
-  const [toNext, setToNext] = useState(false);
+  const fromCurrencyValuesDefault = [
+    { key: 'USD', value: 'USD' },
+    { key: 'EUR', value: 'EUR' },
+    { key: 'RUR', value: 'RUR' },
+    { key: 'BTC', value: 'BTC' },
+  ];
+
+  const toCurrencyValuesDefault = [
+    { key: 'UAH', value: 'UAH' },
+    { key: 'USD', value: 'USD' },
+  ];
+
   const dispatch = useDispatch();
 
   const initialValues = {
-    amount: '',
-    fromCurrency: 'USD',
-    toCurrency: 'UAH',
+    fromCurrencyDefault: 'USD',
+    toCurrencyDefault: 'UAH',
   };
 
   const onSubmit = (values) => {
-    dispatch(currencyCalculate(values.amount));
-    dispatch(fromCurrency(values.fromCurrency));
-    dispatch(toCurrency(values.toCurrency));
+    dispatch(setDefaultFromCurrency(values.fromCurrencyDefault));
+    dispatch(setDefaultToCurrency(values.toCurrencyDefault));
     console.log(JSON.stringify(values, null, 2));
-    setToNext(true);
   };
 
   return(
@@ -33,41 +42,10 @@ export const Default = () => {
       <Form className="default-container">
         <h1>Default Selection</h1>
         <div className="fields-wrapper">
-          <div className="field-container">
-            <div>Amount</div>
-            <Field 
-              type="text"
-              id="amount"
-              name="amount"
-              className="field-item"
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-            />
-          </div>
-          <div className="field-container">
-            <div>From</div>
-            <Field as="select" name="fromCurrency" className="field-item">
-              <option value=""></option>
-              <option value="USD">USD - US Dollar</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="RUB">RUB - Russian Ruble</option>
-              <option value="BTC">BTC - Bitcoin</option>
-            </Field>
-          </div>
-          <div className="field-container">
-            <div>To</div>
-            <Field as="select" name="toCurrency" className="field-item">
-              <option value=""></option>
-              <option value="UAH">UAH - Ukraininan Hryvnia</option>
-              <option value="USD">USD - US Dollar</option>
-            </Field>
-          </div>
+          <Select label='From' name='fromCurrencyDefault' options={fromCurrencyValuesDefault} />
+          <Select label='To' name='toCurrencyDefault' options={toCurrencyValuesDefault} />
         </div>
-        {toNext ? <Redirect to="/result" /> : null}
-        <button type="submit" className="convert-button">Add Amount</button>
+        <button type="submit" className="convert-button">Set Default Selection</button>
         <Link to="/">
           <button>Back</button>
         </Link>
