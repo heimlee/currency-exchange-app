@@ -1,0 +1,24 @@
+.result-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.result-row {
+  display: flex;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.next-button {
+  margin-top: 20px;
+  padding: 5px 10px;
+}

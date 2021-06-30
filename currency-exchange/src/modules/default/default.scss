@@ -1,0 +1,30 @@
+.default-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.fields-wrapper {
+  display: flex;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.field-item {
+  outline: none;
+  padding: 5px;
+  width: 200px;
+}
+
+.convert-button {
+  margin-top: 30px;
+  padding: 5px 10px;
+}
