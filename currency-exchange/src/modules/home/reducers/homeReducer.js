@@ -1,4 +1,4 @@
-import { CURRENCY_CALCULATE, FROM_CURRENCY, TO_CURRENCY, GET_CURRENCY_EXCHENGE, GET_CURRENCY_EXCHENGE_SUCCESS, GET_CURRENCY_EXCHENGE_FAILURE, IS_SWAP } from '../actions/currencyCalculateAction';
+import { CURRENCY_CALCULATE, FROM_CURRENCY, TO_CURRENCY, GET_CURRENCY_EXCHENGE, GET_CURRENCY_EXCHENGE_SUCCESS, GET_CURRENCY_EXCHENGE_FAILURE, IS_SWAP, GET_TO_CURRENCY } from '../actions/currencyCalculateAction';
 
 const initialState  = {
   amount: [],
@@ -8,6 +8,7 @@ const initialState  = {
   hasError: false,
   isSwap: false,
   exchange: [],
+  selectTo: [],
 };
 
 export const homeReducer = (state = initialState, action) => {
@@ -24,6 +25,8 @@ export const homeReducer = (state = initialState, action) => {
       return { ...state, fromCurrency: action.payload };
     case TO_CURRENCY:
       return { ...state, toCurrency: action.payload };
+    case GET_TO_CURRENCY:
+      return { ...state, selectTo: action.payload };
     case IS_SWAP:
       return { ...state, isSwap: !state.isSwap };
     default:
