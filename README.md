@@ -1,1 +1,1 @@
-# currency-exchange-app
+# Currency Exchange App
